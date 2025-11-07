@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "name": "Wedding Premium Package",
+    "price": 500,
+    "duration": "6 Hours",
+    "features": [
+      "Drone coverage",
+      "Cinematic video",
+      "Makeup artist included",
+      "Photo album (20 pages)"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Birthday Event Package",
+    "price": 250,
+    "duration": "3 Hours",
+    "features": [
+      "Unlimited photos",
+      "Candid photography",
+      "Basic video coverage",
+      "1 photographer"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Corporate Shoot Package",
+    "price": 400,
+    "duration": "5 Hours",
+    "features": [
+      "Professional lighting setup",
+      "Team photoshoot",
+      "Brand video edit",
+      "10 edited portraits"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Outdoor Couple Shoot",
+    "price": 180,
+    "duration": "2 Hours",
+    "features": [
+      "Location selection assistance",
+      "10 edited photos",
+      "Instagram reels short video"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Portrait Studio Session",
+    "price": 120,
+    "duration": "1 Hour",
+    "features": [
+      "Professional lighting",
+      "Makeup & styling guidance",
+      "5 edited photos"
+    ]
+  }
+]

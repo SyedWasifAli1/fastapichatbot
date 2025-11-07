@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Wedding Couple in Sunset",
+    "category": "Wedding",
+    "image_url": "https://example.com/images/wedding1.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Birthday Celebration",
+    "category": "Event",
+    "image_url": "https://example.com/images/birthday1.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Corporate Team Portrait",
+    "category": "Corporate",
+    "image_url": "https://example.com/images/corporate1.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Outdoor Couple Shoot",
+    "category": "Outdoor",
+    "image_url": "https://example.com/images/couple1.jpg"
+  },
+  {
+    "id": 5,
+    "title": "Studio Headshot",
+    "category": "Portrait",
+    "image_url": "https://example.com/images/portrait1.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Bridal Makeup Closeup",
+    "category": "Wedding",
+    "image_url": "https://example.com/images/wedding2.jpg"
+  },
+  {
+    "id": 7,
+    "title": "Corporate Office Shoot",
+    "category": "Corporate",
+    "image_url": "https://example.com/images/corporate2.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Outdoor Nature Portrait",
+    "category": "Outdoor",
+    "image_url": "https://example.com/images/outdoor2.jpg"
+  }
+]
