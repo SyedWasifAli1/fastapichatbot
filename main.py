@@ -345,33 +345,23 @@
 # def health_check():
 #     return {"status": "ok", "message": "Photography AI Assistant running"}
 
-
-
 from fastapi import FastAPI, Request, HTTPException
 from pydantic import BaseModel
 from agents import Agent, Runner, OpenAIChatCompletionsModel, AsyncOpenAI
 from dotenv import load_dotenv, find_dotenv
-import requests
-import os
+import requests, os
 
-# =========================
-# 1️⃣ Load Environment
-# =========================
+# 1️⃣ Load environment
 load_dotenv(find_dotenv())
-
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 CLOUDSTATION_API_KEY = os.getenv("CLOUDSTATION_API_KEY")
 CLOUDSTATION_SEND_URL = os.getenv("CLOUDSTATION_SEND_URL")
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 
-# =========================
-# 2️⃣ FastAPI Init
-# =========================
+# 2️⃣ FastAPI app
 app = FastAPI(title="WhatsApp Ecommerce Agent")
 
-# =========================
 # 3️⃣ Setup LLM
-# =========================
 client = AsyncOpenAI(
     api_key=GEMINI_API_KEY,
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
@@ -385,78 +375,50 @@ model = OpenAIChatCompletionsModel(
 agent = Agent(
     name="EcommerceAgent",
     model=model,
-    instructions="""
-    You are a professional ecommerce AI assistant.
-    Reply short and clear in WhatsApp style.
-    """
+    instructions="You are a professional ecommerce AI assistant. Reply short and clear in WhatsApp style."
 )
 
-# =========================
-# 4️⃣ Request Schema (for /ask)
-# =========================
+# 4️⃣ Request schema
 class AskRequest(BaseModel):
     message: str
 
-# =========================
-# 5️⃣ WhatsApp Send Function
-# =========================
+# 5️⃣ WhatsApp send function
 def send_whatsapp_message(number: str, message: str):
     headers = {
         "Authorization": f"Bearer {CLOUDSTATION_API_KEY}",
         "Content-Type": "application/json"
     }
-
-    payload = {
-        "number": number,
-        "text": message
-    }
-
+    payload = {"number": number, "text": message}
     requests.post(CLOUDSTATION_SEND_URL, json=payload, headers=headers)
 
-# =========================
-# 6️⃣ Manual Test Endpoint
-# =========================
+# 6️⃣ Async manual test endpoint
 @app.post("/ask")
-def ask_agent(data: AskRequest):
-    result = Runner.run_sync(
+async def ask_agent(data: AskRequest):
+    result = await Runner.run(
         starting_agent=agent,
         input=data.message
     )
+    return {"user_input": data.message, "ai_response": result.final_output}
 
-    return {
-        "user_input": data.message,
-        "ai_response": result.final_output
-    }
-
-# =========================
-# 7️⃣ Webhook Verification
-# =========================
+# 7️⃣ Webhook verification
 @app.get("/webhook")
 async def verify(token: str):
     if token == VERIFY_TOKEN:
         return {"status": "verified"}
     raise HTTPException(status_code=403, detail="Invalid verification token")
 
-# =========================
-# 8️⃣ Webhook Receiver
-# =========================
+# 8️⃣ Async webhook receiver
 @app.post("/webhook")
 async def receive_message(request: Request):
     data = await request.json()
-
     user_number = data.get("from")
     user_message = data.get("body")
-
     if not user_number or not user_message:
         return {"status": "invalid payload"}
 
-    result = Runner.run_sync(
+    result = await Runner.run(
         starting_agent=agent,
         input=user_message
     )
-
-    ai_response = result.final_output
-
-    send_whatsapp_message(user_number, ai_response)
-
+    send_whatsapp_message(user_number, result.final_output)
     return {"status": "processed"}
